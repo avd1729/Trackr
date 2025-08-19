@@ -44,4 +44,11 @@ public class TaskService {
         taskRepository.save(task);
         return task;
     }
+
+    public Task deleteTask(Integer id) {
+        Task task = getTaskById(id);
+        if(task == null) throw new RuntimeException("Task not found :" + id);
+        taskRepository.deleteById(id);
+        return task;
+    }
 }
