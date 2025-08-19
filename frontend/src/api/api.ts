@@ -1,6 +1,10 @@
 import type { Task } from "@/model/Task";
 import type { TaskDTO } from "@/dto/TaskDTO";
 
+/**
+ * function to get all tasks.
+ * @returns {Promise<Array<Task>>}
+ */
 async function getAllTasks(): Promise<Array<Task>> {
     const response = await fetch("http://localhost:8080/api/task");
     if (!response.ok) {
@@ -9,9 +13,13 @@ async function getAllTasks(): Promise<Array<Task>> {
     return await response.json();
 }
 
+/**
+ * function to create a new task.
+ * @param taskDTO 
+ * @returns {Promise<Task>}
+ */
 async function createTask(taskDTO: TaskDTO): Promise<Task> {
     const formattedDueDate = new Date(taskDTO.dueDate).toISOString().slice(0, 19);
-    
     const task: Task = {
         title: taskDTO.title,
         description: taskDTO.description,
@@ -35,9 +43,14 @@ async function createTask(taskDTO: TaskDTO): Promise<Task> {
     return await response.json();
 }
 
+/**
+ * function to update existing task.
+ * @param taskDTO 
+ * @param id 
+ * @returns {Promise<Task>}
+ */
 async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
     const formattedDueDate = new Date(taskDTO.dueDate).toISOString().slice(0, 19);
-    
     const task: Task = {
         title: taskDTO.title,
         description: taskDTO.description,
@@ -61,6 +74,11 @@ async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
     return await response.json();
 }
 
+/**
+ * function to delete existing task.
+ * @param id 
+ * @returns {Promise<Task>}
+ */
 async function deleteTask(id: number): Promise<Task> {
     const response = await fetch(`http://localhost:8080/api/task/${id}`, {
         method: "DELETE",
@@ -75,41 +93,3 @@ async function deleteTask(id: number): Promise<Task> {
     
     return await response.json();
 }
-
-// Test code - fixed to actually test updateTask
-(async () => {
-    const newTask: TaskDTO = {
-        title: "Learn TanStack - 2",
-        description: "Explore query + router",
-        dueDate: "2025-08-20",
-        category: "Learning",
-        completed: false,
-    };
-    
-    try {
-        // First create a task
-        const createdTask = await createTask(newTask);
-        console.log("Task created:", createdTask);
-        
-        // Then update it
-        const updatedTaskDTO: TaskDTO = {
-            ...newTask,
-            title: "Learn TanStack - Updated",
-            completed: true,
-        };
-        
-        if (createdTask.taskId === undefined) {
-            throw new Error("Task ID is undefined");
-        }
-        const updatedTask = await updateTask(updatedTaskDTO, createdTask.taskId);
-        console.log("Task updated:", updatedTask);
-        
-        const tasks = await getAllTasks();
-        console.log("All tasks:", tasks);
-
-        const task = await deleteTask(createdTask.taskId);
-        console.log("Deleted task:", task);
-    } catch (err) {
-        console.error("Error:", err);
-    }
-})();
