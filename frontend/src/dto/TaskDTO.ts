@@ -3,5 +3,5 @@ export interface TaskDTO {
     description: string;
     dueDate: string;
     category: string;
-    completed: boolean;
+    completed?: boolean;
 }
