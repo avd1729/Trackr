@@ -15,12 +15,28 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
+    public Task getTaskById(Integer id){
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found :" + id));
+    }
+
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
     public Task createTask(TaskDTO taskDTO) {
         Task task = new Task();
+        task.setTitle(taskDTO.getTitle());
+        task.setDescription(taskDTO.getDescription());
+        task.setDueDate(taskDTO.getDueDate());
+        task.setCategory(taskDTO.getCategory());
+        taskRepository.save(task);
+        return task;
+    }
+
+    public Task updateTask(Integer id, TaskDTO taskDTO) {
+        Task task = getTaskById(id);
+        if(task == null) throw new RuntimeException("Task not found :" + id);
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
         task.setDueDate(taskDTO.getDueDate());

@@ -29,4 +29,10 @@ public class TaskController {
         Task result = taskService.createTask(taskDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@RequestBody TaskDTO taskDTO, @PathVariable Integer id){
+        Task result = taskService.updateTask(id, taskDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
