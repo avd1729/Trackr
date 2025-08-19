@@ -20,4 +20,5 @@ public class TaskDTO {
     private Date dueDate;
 
     private String category;
+    private boolean completed;
 }

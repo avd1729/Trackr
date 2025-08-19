@@ -30,6 +30,7 @@ public class Task {
     private Date dueDate;
 
     private String category;
+    private boolean completed = false;
 
     @PrePersist
     protected void onCreate() {
