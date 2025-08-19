@@ -61,6 +61,21 @@ async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
     return await response.json();
 }
 
+async function deleteTask(id: number): Promise<Task> {
+    const response = await fetch(`http://localhost:8080/api/task/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to delete task");
+    }
+    
+    return await response.json();
+}
+
 // Test code - fixed to actually test updateTask
 (async () => {
     const newTask: TaskDTO = {
@@ -91,6 +106,9 @@ async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
         
         const tasks = await getAllTasks();
         console.log("All tasks:", tasks);
+
+        const task = await deleteTask(createdTask.taskId);
+        console.log("Deleted task:", task);
     } catch (err) {
         console.error("Error:", err);
     }
