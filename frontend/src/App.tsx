@@ -1,36 +1,44 @@
-import logo from './logo.svg'
+import React, { useEffect, useState} from "react";
+import TaskForm from "./components/TaskForm";
+import { createTask, getAllTasks } from "./api/api";
+import type { TaskDTO } from "./dto/TaskDTO";
+import type { Task } from "./model/Task";
 
-function App() {
+const App: React.FC = () => {
+  const [tasks, setTasks] = useState<Array<Task>>([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getAllTasks();
+        setTasks(data);
+      } catch (error) {
+        console.error("Failed to fetch tasks:", error);
+      }
+    };
+    fetchTasks();
+  }, []);
+
+  const handleTaskCreated = async (taskDTO: TaskDTO): Promise<Task> => {
+    const newTask = await createTask(taskDTO);
+    setTasks((prev) => [...prev, newTask]);
+    return newTask;
+  };
+
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-        <img
-          src={logo}
-          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-          alt="logo"
-        />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
-    </div>
-  )
-}
+    <div style={{ padding: "1rem" }}>
+      <h1>My Todo App</h1>
+      <TaskForm onTaskCreated={handleTaskCreated} />
 
-export default App
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.taskId}>
+            <strong>{task.title}</strong> - {task.description} ({task.category}) due {task.dueDate}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default App;

@@ -5,7 +5,7 @@ import type { TaskDTO } from "@/dto/TaskDTO";
  * function to get all tasks.
  * @returns {Promise<Array<Task>>}
  */
-async function getAllTasks(): Promise<Array<Task>> {
+export async function getAllTasks(): Promise<Array<Task>> {
     const response = await fetch("http://localhost:8080/api/task");
     if (!response.ok) {
         throw new Error("Failed to fetch tasks");
@@ -18,7 +18,7 @@ async function getAllTasks(): Promise<Array<Task>> {
  * @param taskDTO 
  * @returns {Promise<Task>}
  */
-async function createTask(taskDTO: TaskDTO): Promise<Task> {
+export async function createTask(taskDTO: TaskDTO): Promise<Task> {
     const formattedDueDate = new Date(taskDTO.dueDate).toISOString().slice(0, 19);
     const task: Task = {
         title: taskDTO.title,
@@ -49,7 +49,7 @@ async function createTask(taskDTO: TaskDTO): Promise<Task> {
  * @param id 
  * @returns {Promise<Task>}
  */
-async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
+export async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
     const formattedDueDate = new Date(taskDTO.dueDate).toISOString().slice(0, 19);
     const task: Task = {
         title: taskDTO.title,
@@ -79,7 +79,7 @@ async function updateTask(taskDTO: TaskDTO, id: number): Promise<Task> {
  * @param id 
  * @returns {Promise<Task>}
  */
-async function deleteTask(id: number): Promise<Task> {
+export async function deleteTask(id: number): Promise<Task> {
     const response = await fetch(`http://localhost:8080/api/task/${id}`, {
         method: "DELETE",
         headers: {
