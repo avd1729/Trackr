@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { updateTask } from "../api/api";
+import { deleteTask, updateTask } from "../api/api";
 import Modal from "./Modal";
 import EditTaskForm from "./EditTaskForm";
 import type { TaskDTO } from "@/dto/TaskDTO";
@@ -30,6 +30,17 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, refreshTasks }) => {
     return task;
   };
 
+  const handleDelete = async (id: number) : Promise<Task> => {
+    if (!selectedTask) {
+      throw new Error("No task selected for deleting.");
+    }
+    const task: Task = await deleteTask(id);
+    setIsModalOpen(false);
+    setSelectedTask(null);
+    refreshTasks();
+    return task;
+  }
+
   return (
     <div>
       {tasks.map((task) => (
@@ -40,7 +51,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, refreshTasks }) => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         {selectedTask && (
-          <EditTaskForm task={selectedTask} onSave={handleSave} onCancel={() => setIsModalOpen(false)} />
+          <EditTaskForm task={selectedTask} onSave={handleSave} onCancel={() => setIsModalOpen(false)} onDelete={handleDelete}/>
         )}
       </Modal>
     </div>

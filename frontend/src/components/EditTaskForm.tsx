@@ -6,9 +6,10 @@ interface EditTaskFormProps {
     task: Task;
     onSave: (updatedTask: TaskDTO) => Promise<Task>;
     onCancel: () => void;
+    onDelete: (id: number) => Promise<Task>; 
 }
 
-const EditTaskForm = ({ task, onSave, onCancel} : EditTaskFormProps) => {
+const EditTaskForm = ({ task, onSave, onCancel, onDelete } : EditTaskFormProps) => {
     const [title, setTitle] = useState(task.title);
     const [description, setDescription] = useState(task.description);
     const [dueDate, setDueDate] = useState(task.dueDate);
@@ -18,6 +19,14 @@ const EditTaskForm = ({ task, onSave, onCancel} : EditTaskFormProps) => {
     const handleSubmit = () => {
         onSave({ title, description, dueDate, category, completed });
     };
+
+    const handleDelete = () => {
+        if (task.taskId !== undefined) {
+            onDelete(task.taskId);
+        } else {
+            console.error("Task ID is undefined. Cannot delete task.");
+        }
+    }
 
     return (
         <div className="space-y-3">
@@ -31,6 +40,7 @@ const EditTaskForm = ({ task, onSave, onCancel} : EditTaskFormProps) => {
             <div className="flex justify-end gap-2">
                 <button onClick={onCancel}>Cancel</button>
                 <button onClick={handleSubmit}>Save</button>
+                <button onClick={handleDelete}>Delete</button>
             </div>
         </div>
     );
