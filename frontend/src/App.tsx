@@ -28,10 +28,12 @@ const App: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h1>My Todo App</h1>
-      <TaskForm onTaskCreated={handleTaskCreated} />
-      <TaskList tasks={tasks} refreshTasks={fetchTasks} />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center py-10 px-2">
+      <h1 className="text-4xl font-extrabold text-purple-700 mb-8 drop-shadow-lg tracking-tight">Trackr</h1>
+      <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-6">
+        <TaskForm onTaskCreated={handleTaskCreated} />
+        <TaskList tasks={tasks} refreshTasks={fetchTasks} />
+      </div>
     </div>
   );
 };

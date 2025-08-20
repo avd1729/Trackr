@@ -40,35 +40,45 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-8">
       <input
         type="text"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
+        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
       />
-      <br />
       <textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 transition min-h-[60px]"
       />
-      <br />
       <input
         type="datetime-local"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
+        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
       />
-      <br />
       <input
         type="text"
         placeholder="Category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
+        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
       />
-      <br />
-      <button type="submit">Add Task</button>
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={completed}
+          onChange={(e) => setCompleted(e.target.checked)}
+          id="completed"
+          className="accent-purple-500"
+        />
+        <label htmlFor="completed" className="text-gray-700">Completed</label>
+      </div>
+      <button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition">Add Task</button>
     </form>
   );
 };
